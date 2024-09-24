@@ -1,18 +1,23 @@
 import { Client } from "node-osc";
-import { ARENA_PLAY_COMMAND, REAPER_PLAY_COMMAND } from "./config";
+import { MASTER_PLAY_COMMAND, SLAVE_PLAY_COMMAND } from "./config";
 
-const { REMOTE_IP_ADDR, REMOTE_OSC_PORT, LOCAL_OSC_PORT } = Bun.env;
+const { SLAVE_IP_ADDR, SLAVE_OSC_PORT, MASTER_OSC_PORT } = Bun.env;
 
-const localClient = new Client("127.0.0.1", parseInt(LOCAL_OSC_PORT || "1111"));
+const localClient = new Client(
+  "127.0.0.1",
+  parseInt(MASTER_OSC_PORT || "1111"),
+);
 const remoteClient = new Client(
-  REMOTE_IP_ADDR || "192.168.0.2",
-  parseInt(REMOTE_OSC_PORT || "2222"),
+  SLAVE_IP_ADDR || "192.168.0.2",
+  parseInt(SLAVE_OSC_PORT || "2222"),
 );
 
 export function playLocal() {
-  localClient.send(REAPER_PLAY_COMMAND);
+  //@ts-ignore
+  localClient.send(SLAVE_PLAY_COMMAND, 1);
 }
 
 export function playRemote() {
-  remoteClient.send(ARENA_PLAY_COMMAND);
+  //@ts-ignore
+  remoteClient.send(MASTER_PLAY_COMMAND, 1);
 }

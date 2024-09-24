@@ -1,3 +1,8 @@
-import { use_bot } from "./lib/args";
+import { use_bot, is_slave } from "./lib/args";
+import { run_bot } from "./lib/bot";
 
-console.log(use_bot);
+console.table({ use_bot, is_slave });
+
+if (use_bot) {
+  run_bot();
+}
